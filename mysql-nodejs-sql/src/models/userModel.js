@@ -1,3 +1,4 @@
+//src/models/userModels.js
 const db = require('../config/db');
 
 
