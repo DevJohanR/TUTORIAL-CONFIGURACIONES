@@ -34,13 +34,15 @@ exports.loginUser = (req, res) => {
 
 
 
-//REGISTER CONTROLER
-exports.createUser = (req, res) =>{
-  UserModel.createUser(req, res)
-  .then(result =>{
-    res.status(201).send({ id: result [0].insertId, message: "Usuario creado exitosamente." })
-  })
-  .catch(error =>{
-    res.status(500).send({message: "Error al crear Usuario", error: error.message})
-  })
-}
+//REGISTER CONTROLLER
+exports.createUser = (req, res) => {
+  const { nombre, email } = req.body; // Asegúrate de obtener 'nombre' del cuerpo de la solicitud.
+
+  UserModel.createUser({ nombre, email }) // Pasar el objeto directamente a createUser.
+    .then(result => {
+      res.status(201).send({ id: result[0].insertId, message: "Usuario creado exitosamente." });
+    })
+    .catch(error => {
+      res.status(500).send({ message: "Error al crear Usuario", error: error.message });
+    });
+};
