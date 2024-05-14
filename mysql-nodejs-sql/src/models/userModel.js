@@ -5,9 +5,10 @@ const db = require('../config/db');
 
 //REGISTER
 exports.createUser = (userData) =>{
-return db.query('INSERT INTO usuarios (nombre, email) VALUES (?,?)', [
+return db.query('INSERT INTO usuarios (nombre, email, password) VALUES (?,?,?)', [
     userData.nombre,
-    userData.email
+    userData.email,
+    userData.password
 ]);
 };
 

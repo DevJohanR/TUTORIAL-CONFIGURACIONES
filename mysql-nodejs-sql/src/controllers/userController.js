@@ -34,11 +34,11 @@ exports.loginUser = (req, res) => {
 
 
 
-//REGISTER CONTROLLER
+//REGISTER CONTROLLER ---SIN BSCRIPT
 exports.createUser = (req, res) => {
-  const { nombre, email } = req.body; // Asegúrate de obtener 'nombre' del cuerpo de la solicitud.
+  const { nombre, email, password } = req.body; // Asegúrate de obtener 'nombre' del cuerpo de la solicitud.
 
-  UserModel.createUser({ nombre, email }) // Pasar el objeto directamente a createUser.
+  UserModel.createUser({ nombre, email, password }) // Pasar el objeto directamente a createUser.
     .then(result => {
       res.status(201).send({ id: result[0].insertId, message: "Usuario creado exitosamente." });
     })
@@ -46,3 +46,25 @@ exports.createUser = (req, res) => {
       res.status(500).send({ message: "Error al crear Usuario", error: error.message });
     });
 };
+
+//REGISTER CONTROLLER ---CON BSCRIPT
+
+exports.createUserBscript = async (req, res)=>{
+const {nombre, email, password} = req.body;
+
+//Generar el salt
+const salt = await bcrypt.genSalt(10);
+
+//Hash la contraseña
+const hashedPassword = await bcrypt.hash(password, salt);
+
+UserModel.createUser({nombre, email, password: hashedPassword }) // pasar el objeto con la contraseña hasheada a createUser.
+
+.then(result=>{
+  res.status(201).send ({id: result[0].insertId, message: "Usuario Creado Exitosamente."})
+})
+.catch(error => {
+  res.status(500).send({message: "Error al crear Usuario", error: error.message})
+})
+
+}
